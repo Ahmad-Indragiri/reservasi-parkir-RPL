@@ -1,25 +1,29 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 
 export default function SensorPage() {
   const [slots, setSlots] = useState(
     Array.from({ length: 12 }, () => Math.random() > 0.5)
-  )
+  );
 
   // Simulasi update status slot parkir setiap 5 detik
   useEffect(() => {
     const interval = setInterval(() => {
-      setSlots(slots.map(() => Math.random() > 0.5))
-    }, 5000)
+      setSlots((prevSlots) =>
+        prevSlots.map(() => Math.random() > 0.5)
+      );
+    }, 5000);
 
-    return () => clearInterval(interval)
-  }, [slots])
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <main className="min-h-screen bg-white px-4 py-10 text-gray-900">
       <section className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-center mb-6 text-blue-700">Sensor Parkir</h1>
+        <h1 className="text-3xl font-bold text-center mb-6 text-blue-700">
+          Sensor Parkir
+        </h1>
         <p className="text-center mb-8 text-gray-600">
           Pantau ketersediaan slot secara real-time (simulasi).
         </p>
@@ -28,18 +32,18 @@ export default function SensorPage() {
           {slots.map((isAvailable, index) => (
             <div
               key={index}
-              className={`rounded-xl p-6 text-center transition shadow-md font-semibold ${
-                isAvailable ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+              className={`rounded-xl p-6 text-center transition-all duration-300 shadow-md font-semibold transform ${
+                isAvailable
+                  ? "bg-green-100 text-green-700 scale-100"
+                  : "bg-red-100 text-red-700 scale-95"
               }`}
             >
-              Slot #{index + 1}
-              <p className="text-sm mt-2">
-                {isAvailable ? "Tersedia" : "Terisi"}
-              </p>
+              <span className="block text-lg mb-1">Slot #{index + 1}</span>
+              <p className="text-sm">{isAvailable ? "Tersedia" : "Terisi"}</p>
             </div>
           ))}
         </div>
       </section>
     </main>
-  )
+  );
 }

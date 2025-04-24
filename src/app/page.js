@@ -1,5 +1,4 @@
-"use client"; // Menandakan bahwa ini adalah komponen client
-
+"use client"; 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
