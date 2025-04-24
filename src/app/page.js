@@ -71,16 +71,21 @@ export default function Home() {
 
       {/* Pembayaran - Simulasi */}
       <section className="mt-16 text-center">
-        <h2 className="text-3xl font-bold mb-10">💳 Pembayaran Digital</h2>
+        <h2 className="text-3xl font-bold mb-6">💳 Panduan Penggunaan</h2>
+        <p className="text-gray-600 dark:text-gray-300 mb-8">
+          Pelajari cara menggunakan aplikasi reservasi parkir dengan mudah dan cepat.
+        </p>
         <div className="w-full max-w-sm mx-auto">
-          <Button
-            className="text-white bg-green-600 hover:bg-green-700 text-lg px-6 py-3 rounded-xl shadow-md transform transition-transform hover:scale-105 focus:outline-none"
-            onClick={() => alert("Pembayaran berhasil diproses!")}
-          >
-            Bayar Sekarang
-          </Button>
+          <Link href="/tutorial">
+            <Button
+              className="text-white bg-blue-600 hover:bg-blue-700 text-lg px-6 py-3 rounded-xl shadow-md transform transition-transform hover:scale-105 focus:outline-none"
+            >
+              Lihat Tutorial
+            </Button>
+          </Link>
         </div>
       </section>
+
     </main>
   );
 }
