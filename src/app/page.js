@@ -1,39 +1,84 @@
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import Link from "next/link"
+"use client"; // Menandakan bahwa ini adalah komponen client
+
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Home() {
+  const [darkMode, setDarkMode] = useState(false);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
   return (
-    <main className="min-h-screen bg-gradient-to-br from-white to-blue-50 text-gray-900 px-4 sm:px-6 lg:px-12 py-10">
+    <main
+      className={`min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-white to-blue-100 text-gray-900'} px-4 sm:px-6 lg:px-12 py-10`}
+    >
+      {/* Dark Mode Toggle Button */}
+      <div className="fixed top-4 right-4">
+        <Button
+          className={`text-white bg-gray-800 hover:bg-gray-700 text-sm p-3 rounded-full shadow-md transition`}
+          onClick={toggleDarkMode}
+        >
+          {darkMode ? '🌞 Light Mode' : '🌙 Dark Mode'}
+        </Button>
+      </div>
+
       {/* Hero Section */}
       <section className="text-center max-w-2xl mx-auto mb-16">
-        <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
+        <div className="inline-block p-2 px-4 bg-blue-100 rounded-full text-blue-600 text-sm font-medium mb-4 shadow-sm">
+          Solusi Parkir Modern
+        </div>
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight tracking-tight">
           Reservasi Parkir <span className="text-blue-600">Mudah & Cepat</span>
         </h1>
-        <p className="text-lg md:text-xl text-gray-600 mb-6">
+        <p className="text-lg md:text-xl text-gray-600 dark:text-gray-200 mb-6">
           Cari, reservasi, dan navigasi ke lokasi parkir hanya dari ponselmu.
         </p>
-        <Button className="text-white bg-blue-600 hover:bg-blue-700 text-lg px-6 py-3 rounded-xl shadow-md transition">
-          Cari Tempat Parkir
+        <Button
+          className="text-white bg-blue-600 hover:bg-blue-700 text-lg px-6 py-3 rounded-xl shadow-md transform transition-transform hover:scale-105 focus:outline-none"
+          asChild
+        >
+          <Link href="/pencarian">Cari Tempat Parkir</Link>
         </Button>
       </section>
 
-      {/* Fitur Unggulan */}
+      {/* Peta Interaktif - Placeholder */}
+      <section className="text-center my-16">
+        <h2 className="text-3xl font-bold mb-10">Peta Lokasi Parkir</h2>
+        <div className="w-full h-64 bg-gray-300 rounded-xl shadow-md">
+          {/* Placeholder for map (can integrate Google Maps API later) */}
+          <p className="text-center text-gray-600 dark:text-gray-200 py-20">Peta akan muncul di sini</p>
+        </div>
+      </section>
+
+      {/* Fitur Section */}
       <section>
-        <h2 className="text-3xl font-semibold mb-10 text-center">
-          🚀 Fitur Unggulan
-        </h2>
+        <h2 className="text-3xl font-bold mb-10 text-center">🚀 Fitur Unggulan</h2>
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {fiturList.map((fitur, idx) => (
             <Link href={fitur.link} key={idx}>
-              <div className="bg-white p-6 rounded-2xl border shadow-sm hover:shadow-md hover:-translate-y-1 transition cursor-pointer">
+              <div className="bg-white p-6 rounded-2xl border shadow-sm hover:shadow-lg hover:-translate-y-1 transition cursor-pointer">
                 <div className="text-4xl mb-4">{fitur.icon}</div>
-                <h3 className="text-lg font-bold mb-2">{fitur.judul}</h3>
-                <p className="text-gray-600 text-sm">{fitur.deskripsi}</p>
+                <h3 className="text-lg font-semibold mb-1 text-gray-900 dark:text-gray-200">{fitur.judul}</h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm">{fitur.deskripsi}</p>
               </div>
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* Pembayaran - Simulasi */}
+      <section className="mt-16 text-center">
+        <h2 className="text-3xl font-bold mb-10">💳 Pembayaran Digital</h2>
+        <div className="w-full max-w-sm mx-auto">
+          <Button
+            className="text-white bg-green-600 hover:bg-green-700 text-lg px-6 py-3 rounded-xl shadow-md transform transition-transform hover:scale-105 focus:outline-none"
+            onClick={() => alert("Pembayaran berhasil diproses!")}
+          >
+            Bayar Sekarang
+          </Button>
         </div>
       </section>
     </main>
@@ -57,7 +102,7 @@ const fiturList = [
     link: "/sensor",
     icon: "📡",
     judul: "Sensor Parkir",
-    deskripsi: "Pantau ketersediaan secara Real-Time.",
+    deskripsi: "Pantau ketersediaan secara real-time.",
   },
   {
     link: "/review",
