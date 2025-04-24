@@ -66,7 +66,7 @@ export default function Home() {
       className={`transition-colors duration-300 min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-white to-blue-100 text-gray-900'} px-4 sm:px-6 lg:px-12 py-10`}
     >
       {/* Dark Mode Toggle Button */}
-      <div className="fixed bottom-4 right-4">
+      <div className="fixed bottom-4 left-4">
         <Button
           className={`text-white bg-gray-800 hover:bg-gray-700 text-sm p-3 rounded-full shadow-md transition`}
           onClick={toggleDarkMode}
