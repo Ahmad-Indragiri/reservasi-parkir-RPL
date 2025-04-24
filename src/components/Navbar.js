@@ -1,16 +1,21 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User } from "lucide-react"; // User icon for the profile
+import Image from "next/image"; // To display the profile image
 
-export default function Navbar({ darkMode }) {
+export default function Navbar({ darkMode, userProfile }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
+
+  const toggleProfileMenu = () => setProfileMenuOpen(!profileMenuOpen);
 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 768) setMenuOpen(false);
+      if (window.innerWidth > 768) setProfileMenuOpen(false); // Close profile menu on resize
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -58,6 +63,48 @@ export default function Navbar({ darkMode }) {
             </Link>
           </li>
         ))}
+
+        {/* Profile Menu */}
+        <li className="my-2 md:my-0 relative">
+          <button
+            onClick={toggleProfileMenu}
+            className="flex items-center space-x-2 text-base font-medium"
+          >
+            <Image
+              src={userProfile?.image || "/default-profile.png"} // Default image if no user image
+              alt="User Profile"
+              width={32}
+              height={32}
+              className="rounded-full"
+            />
+            <span>{userProfile?.name || "User"}</span>
+          </button>
+          
+          {/* Profile dropdown menu */}
+          {profileMenuOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg border border-gray-200">
+              <Link
+                href="/profile/edit"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Edit Profil
+              </Link>
+              <Link
+                href="/profile"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Lihat Profil
+              </Link>
+              <hr className="my-1 border-gray-200" />
+              <Link
+                href="/logout"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Logout
+              </Link>
+            </div>
+          )}
+        </li>
       </ul>
     </nav>
   );

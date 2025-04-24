@@ -3,8 +3,12 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import Chatbot from "@/components/Chatbot";
+import dynamic from "next/dynamic";
 
 export default function Home() {
+  const SocialReview = dynamic(() => import("@/components/SocialReview"), { ssr: false });
   const [darkMode, setDarkMode] = useState(false);
   const [lokasi, setLokasi] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -167,7 +171,11 @@ export default function Home() {
         </div>
       </section>
 
-    </main></>
+      <SocialReview />
+
+      <Chatbot/>
+
+    </main><Footer/></>
   );
 }
 
