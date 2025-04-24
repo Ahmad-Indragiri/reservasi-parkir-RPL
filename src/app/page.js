@@ -1,18 +1,65 @@
-"use client"; 
-import React, { useState } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import Navbar from "@/components/Navbar";
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
+  const [lokasi, setLokasi] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+
+  const lokasiList = [
+    "Mall Harmoni",
+    "Stasiun Bekasi",
+    "Pasar Baru",
+    "Bandara Soekarno-Hatta",
+    "RS Hermina",
+    "Gedung Graha Mandiri"
+  ];
+
+  useEffect(() => {
+    const savedMode = localStorage.getItem("darkMode");
+    if (savedMode) setDarkMode(JSON.parse(savedMode));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+  }, [darkMode]);
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   };
 
+  const handleLokasiChange = (e) => {
+    const input = e.target.value;
+    setLokasi(input);
+    if (input.length > 0) {
+      const filtered = lokasiList.filter((item) =>
+        item.toLowerCase().includes(input.toLowerCase())
+      );
+      setSuggestions(filtered);
+    } else {
+      setSuggestions([]);
+    }
+  };
+
+  const handleSuggestionClick = (lokasiDipilih) => {
+    setLokasi(lokasiDipilih);
+    setSuggestions([]);
+  };
+
+  useEffect(() => {
+    const handleOffline = () => alert("Kamu sedang offline");
+    window.addEventListener("offline", handleOffline);
+    return () => window.removeEventListener("offline", handleOffline);
+  }, []);
+  
+
   return (
+    <><Navbar />
     <main
-      className={`min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-white to-blue-100 text-gray-900'} px-4 sm:px-6 lg:px-12 py-10`}
+      className={`transition-colors duration-300 min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-white to-blue-100 text-gray-900'} px-4 sm:px-6 lg:px-12 py-10`}
     >
       {/* Dark Mode Toggle Button */}
       <div className="fixed bottom-4 right-4">
@@ -43,12 +90,47 @@ export default function Home() {
         </Button>
       </section>
 
+      {/* Auto Suggest Input */}
+      <section className="text-center max-w-xl mx-auto mb-16">
+        <h2 className="text-xl font-semibold mb-4">🔍 Cari Lokasi Parkir</h2>
+        <input
+          type="text"
+          value={lokasi}
+          onChange={handleLokasiChange}
+          placeholder="Ketik lokasi parkir..."
+          className="w-full px-4 py-3 rounded-lg border shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900" />
+        {suggestions.length > 0 && (
+          <ul className="border rounded mt-1 bg-white shadow-md text-sm max-h-40 overflow-y-auto z-50 relative text-left">
+            {suggestions.map((saran, index) => (
+              <li
+                key={index}
+                onClick={() => handleSuggestionClick(saran)}
+                className="px-4 py-2 cursor-pointer hover:bg-blue-100"
+              >
+                {saran}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
       {/* Peta Interaktif - Placeholder */}
       <section className="text-center my-16">
         <h2 className="text-3xl font-bold mb-10">Peta Lokasi Parkir</h2>
-        <div className="w-full h-64 bg-gray-300 rounded-xl shadow-md">
-          {/* Placeholder for map (can integrate Google Maps API later) */}
-          <p className="text-center text-gray-600 dark:text-gray-200 py-20">Peta akan muncul di sini</p>
+        <div className="mt-10">
+          <h2 className="text-xl font-semibold mb-2 dark:text-white">📍 Peta Lokasi Magelang</h2>
+          <div className="w-full h-64 sm:h-96 rounded-xl overflow-hidden shadow-md">
+            <iframe
+              title="Peta Magelang"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126406.57393787434!2d110.14304739616945!3d-7.476759219992282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a833a4bfbba8d%3A0x3027a76e352bc50!2sKota%20Magelang%2C%20Jawa%20Tengah!5e0!3m2!1sen!2sid!4v1713973960000!5m2!1sen!2sid"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
         </div>
       </section>
 
@@ -85,7 +167,7 @@ export default function Home() {
         </div>
       </section>
 
-    </main>
+    </main></>
   );
 }
 
