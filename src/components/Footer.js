@@ -5,24 +5,49 @@ import { Facebook, Instagram, Twitter } from "lucide-react";
 export default function Footer({ darkMode }) {
   return (
     <footer
-      className={`w-full px-6 py-8 text-center border-t transition-colors duration-300 ${
-        darkMode ? "bg-gray-900 text-white border-gray-700" : "bg-white text-gray-800 border-gray-300"
+      className={`w-full px-6 py-10 border-t transition-colors duration-500 ${
+        darkMode ? "bg-gray-900 border-gray-700 text-white" : "bg-white border-gray-200 text-gray-800"
       }`}
     >
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 max-w-6xl mx-auto">
-        <p className="text-sm">&copy; {new Date().getFullYear()} ParkirinAja. All rights reserved. Designed and developed by Ahmad Abdillah Indragiri.</p>
-        <div className="flex gap-4 justify-center">
-          <Link href="#" aria-label="Facebook" className="hover:text-blue-500">
-            <Facebook size={20} />
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 items-center justify-between">
+        <p className="text-sm text-center md:text-left relative inline-block group">
+          &copy; {new Date().getFullYear()}{" "}
+          <span className="font-semibold text-blue-600 dark:text-blue-400 transition-colors duration-300 group-hover:text-blue-700 dark:group-hover:text-blue-300">
+            ParkirinAja
+          </span>. All rights reserved.
+          <br className="md:hidden" />
+          <span className="block md:inline text-xs mt-1 text-gray-500 dark:text-gray-400">
+            Designed & built by Ahmad Abdillah Indragiri.
+          </span>
+        </p>
+
+        <div className="flex justify-center md:justify-end gap-5">
+          <Link
+            href="#"
+            aria-label="Facebook"
+            className="transform hover:scale-110 transition-all duration-300 hover:text-blue-500"
+          >
+            <Facebook size={22} />
           </Link>
-          <Link href="#" aria-label="Instagram" className="hover:text-pink-500">
-            <Instagram size={20} />
+          <Link
+            href="#"
+            aria-label="Instagram"
+            className="transform hover:scale-110 transition-all duration-300 hover:text-pink-500"
+          >
+            <Instagram size={22} />
           </Link>
-          <Link href="#" aria-label="Twitter" className="hover:text-blue-400">
-            <Twitter size={20} />
+          <Link
+            href="#"
+            aria-label="Twitter"
+            className="transform hover:scale-110 transition-all duration-300 hover:text-sky-400"
+          >
+            <Twitter size={22} />
           </Link>
         </div>
       </div>
+
+      {/* Shine Line */}
+      <div className="mt-6 w-full h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-40 animate-pulse" />
     </footer>
   );
 }
