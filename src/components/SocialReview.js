@@ -23,31 +23,44 @@ export default function SocialReview() {
   };
 
   return (
-    <section className="mt-12 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-xl max-w-2xl mx-auto transition-colors">
-      <h2 className="text-2xl font-semibold mb-6 text-center">Berbagi & Beri Ulasan</h2>
+    <section className="mt-12 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-xl max-w-3xl mx-auto transition-colors duration-300 ease-in-out">
+      <h2 className="text-3xl font-semibold mb-6 text-center text-gray-900 dark:text-white">
+        Berbagi & Beri Ulasan
+      </h2>
 
       {/* Social Sharing */}
-      <div className="flex justify-center gap-6 mb-8 text-gray-600 dark:text-gray-300">
-        <button onClick={() => handleShare("Facebook")} className="hover:text-blue-600 transition transform hover:scale-110">
-          <Facebook />
+      <div className="flex justify-center gap-8 mb-8 text-gray-600 dark:text-gray-300 transition-transform">
+        <button
+          onClick={() => handleShare("Facebook")}
+          className="hover:text-blue-600 transition transform hover:scale-110"
+        >
+          <Facebook size={28} />
         </button>
-        <button onClick={() => handleShare("Twitter")} className="hover:text-sky-400 transition transform hover:scale-110">
-          <Twitter />
+        <button
+          onClick={() => handleShare("Twitter")}
+          className="hover:text-sky-400 transition transform hover:scale-110"
+        >
+          <Twitter size={28} />
         </button>
-        <button onClick={() => handleShare("WhatsApp")} className="hover:text-green-500 transition transform hover:scale-110">
-          <FaWhatsapp size={24} />
+        <button
+          onClick={() => handleShare("WhatsApp")}
+          className="hover:text-green-500 transition transform hover:scale-110"
+        >
+          <FaWhatsapp size={28} />
         </button>
       </div>
 
       {/* Review Form */}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="flex justify-center gap-1">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="flex justify-center gap-2">
           {[1, 2, 3, 4, 5].map((i) => (
             <Star
               key={i}
-              size={28}
-              className={`cursor-pointer transition-colors duration-200 ${
-                (hoverRating || rating) >= i ? "text-yellow-400" : "text-gray-300 dark:text-gray-600"
+              size={32}
+              className={`cursor-pointer transition-all duration-300 ease-in-out ${
+                (hoverRating || rating) >= i
+                  ? "text-yellow-500"
+                  : "text-gray-300 dark:text-gray-600"
               }`}
               onMouseEnter={() => setHoverRating(i)}
               onMouseLeave={() => setHoverRating(0)}
@@ -57,25 +70,29 @@ export default function SocialReview() {
         </div>
         <textarea
           rows={4}
-          className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-gray-800 dark:text-white"
+          className="w-full p-4 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-gray-900 dark:text-white transition-colors"
           placeholder="Bagikan pengalaman kamu..."
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         />
         <button
           type="submit"
-          className="block w-full px-6 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition duration-300"
+          className="block w-full px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition duration-300"
         >
           Kirim Ulasan
         </button>
       </form>
 
       {/* Review List */}
-      <div className="mt-8">
-        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Ulasan Pengguna:</h3>
+      <div className="mt-12">
+        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">
+          Ulasan Pengguna:
+        </h3>
         <AnimatePresence>
           {submittedReviews.length === 0 && (
-            <p className="text-sm text-gray-500 dark:text-gray-400 text-center">Belum ada ulasan.</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+              Belum ada ulasan.
+            </p>
           )}
           {submittedReviews.map((rev, idx) => (
             <motion.div
@@ -83,11 +100,11 @@ export default function SocialReview() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="mb-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm"
+              className="mb-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm transition-all duration-300"
             >
-              <div className="flex gap-1 mb-1">
+              <div className="flex gap-1 mb-2">
                 {[...Array(rev.rating)].map((_, i) => (
-                  <Star key={i} size={18} className="text-yellow-400" fill="yellow" />
+                  <Star key={i} size={20} className="text-yellow-400" fill="yellow" />
                 ))}
               </div>
               <p className="text-sm text-gray-700 dark:text-gray-300">{rev.comment}</p>

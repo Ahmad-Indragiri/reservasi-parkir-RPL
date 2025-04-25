@@ -1,14 +1,27 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation"; // Import useRouter for navigation
 
 export default function PembayaranPage() {
   const [darkMode, setDarkMode] = useState(false);
+  const router = useRouter();
 
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    localStorage.setItem("darkMode", JSON.stringify(newMode));
+  };
+
+  useEffect(() => {
+    const savedMode = localStorage.getItem("darkMode");
+    if (savedMode !== null) setDarkMode(JSON.parse(savedMode));
+  }, []);
+
+  const goToSimulasi = () => {
+    router.push("/simulasi"); // Navigasi ke halaman simulasi
   };
 
   return (
@@ -23,7 +36,7 @@ export default function PembayaranPage() {
       <div className="fixed bottom-4 right-4 z-50">
         <Button
           onClick={toggleDarkMode}
-          className="bg-gray-800 hover:bg-gray-700 text-white text-xl p-3 rounded-full shadow-md"
+          className="bg-gray-800 hover:bg-gray-700 text-white text-xl p-3 rounded-full shadow-md transition-all duration-300 ease-in-out"
         >
           {darkMode ? "🌞" : "🌙"}
         </Button>
@@ -52,19 +65,40 @@ export default function PembayaranPage() {
         {walletOptions.map((wallet, index) => (
           <motion.div
             key={index}
-            className="border rounded-xl p-6 flex flex-col items-center bg-white dark:bg-gray-800 hover:shadow-lg transition duration-300 hover:scale-105"
+            className="border rounded-xl p-6 flex flex-col items-center bg-white dark:bg-gray-800 hover:shadow-xl transition-all duration-300 hover:scale-105"
             whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.97 }}
           >
             <div className="text-4xl mb-4">{wallet.icon}</div>
             <h3 className="text-lg font-semibold mb-1 text-gray-800 dark:text-gray-100">
               {wallet.nama}
             </h3>
             <p className="text-gray-500 dark:text-gray-300 text-sm">{wallet.deskripsi}</p>
-            <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+            <button className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
               Bayar Sekarang
             </button>
           </motion.div>
         ))}
+
+        <motion.div
+          className="border rounded-xl p-6 flex flex-col items-center bg-white dark:bg-gray-800 hover:shadow-xl transition-all duration-300 hover:scale-105"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.97 }}
+        >
+          <div className="text-4xl mb-4">🔐</div>
+          <h3 className="text-lg font-semibold mb-1 text-gray-800 dark:text-gray-100">
+            Simulasi
+          </h3>
+          <p className="text-gray-500 dark:text-gray-300 text-sm">
+            Coba simulasi pembayaran tanpa transaksi asli.
+          </p>
+          <button
+            onClick={goToSimulasi}
+            className="mt-4 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-all duration-300 transform hover:scale-105"
+          >
+            Coba Simulasi
+          </button>
+        </motion.div>
       </motion.section>
     </main>
   );
@@ -95,10 +129,5 @@ const walletOptions = [
     icon: "💰",
     nama: "ShopeePay",
     deskripsi: "Bayar belanja dan parkir dari Shopee.",
-  },
-  {
-    icon: "🔐",
-    nama: "Simulasi",
-    deskripsi: "Coba simulasi pembayaran tanpa transaksi asli.",
   },
 ];

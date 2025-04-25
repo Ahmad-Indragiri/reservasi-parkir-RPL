@@ -1,24 +1,14 @@
-"use client";
+import { useState } from "react";
+import { Menu, X, Sun, Moon } from "lucide-react"; // Add Sun and Moon icons
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
 import Image from "next/image";
 
-export default function Navbar({ darkMode, userProfile }) {
+export default function Navbar({ darkMode, toggleDarkMode, userProfile }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const toggleProfileMenu = () => setProfileMenuOpen(!profileMenuOpen);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 768) setMenuOpen(false);
-      if (window.innerWidth > 768) setProfileMenuOpen(false);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const navLinks = [
     { name: "Beranda", href: "/" },
@@ -61,15 +51,28 @@ export default function Navbar({ darkMode, userProfile }) {
           </li>
         ))}
 
+        {/* Dark Mode Toggle */}
+        <li className="my-2 md:my-0">
+          <button
+            onClick={toggleDarkMode}
+            className="flex items-center space-x-2 text-base font-medium"
+          >
+            {darkMode ? (
+              <Sun size={24} className="text-yellow-500" />
+            ) : (
+              <Moon size={24} className="text-gray-800" />
+            )}
+          </button>
+        </li>
+
         {/* Profile Section */}
         <li className="my-2 md:my-0 relative">
           <button
             onClick={toggleProfileMenu}
             className="flex items-center space-x-2 text-base font-medium"
           >
-            {/* Profile Image with hover effect */}
             <Image
-              src={userProfile?.image || "/lambang-unimma.png"} // Default image if no user image
+              src={userProfile?.image || "/lambang-unimma.png"}
               alt="User Profile"
               width={40}
               height={40}
@@ -78,7 +81,6 @@ export default function Navbar({ darkMode, userProfile }) {
             <span className="hidden md:block">{userProfile?.name || "User"}</span>
           </button>
 
-          {/* Profile Dropdown Menu */}
           {profileMenuOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white shadow-xl rounded-lg border border-gray-200 z-10 transition-all duration-300 ease-in-out">
               <Link

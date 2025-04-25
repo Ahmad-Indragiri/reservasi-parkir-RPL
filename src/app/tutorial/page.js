@@ -77,7 +77,11 @@ export default function TutorialPage() {
         >
           Cara Menggunakan Aplikasi
         </motion.h1>
-        <p className={`max-w-xl mx-auto ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+        <p
+          className={`max-w-xl mx-auto ${
+            darkMode ? "text-gray-300" : "text-gray-700"
+          }`}
+        >
           Ikuti langkah-langkah berikut untuk melakukan reservasi tempat parkir dengan mudah.
         </p>
       </section>
@@ -91,12 +95,18 @@ export default function TutorialPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: idx * 0.15 }}
             className={`p-6 rounded-2xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition duration-300 ease-in-out cursor-pointer ${
-              darkMode ? "bg-gray-800 text-gray-100" : "bg-white text-gray-800"
+              darkMode
+                ? "bg-gray-800 text-gray-100"
+                : "bg-white text-gray-800"
             }`}
           >
-            <div className="text-4xl mb-4">{step.icon}</div>
-            <h3 className="text-xl font-bold mb-2">{step.title}</h3>
-            <p className={darkMode ? "text-gray-300 text-sm" : "text-gray-700 text-sm"}>
+            <div className="text-5xl mb-4">{step.icon}</div>
+            <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
+            <p
+              className={
+                darkMode ? "text-gray-300 text-sm" : "text-gray-700 text-sm"
+              }
+            >
               {step.desc}
             </p>
           </motion.div>

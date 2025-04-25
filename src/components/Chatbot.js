@@ -46,7 +46,7 @@ export default function Chatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.95 }}
             transition={{ duration: 0.3 }}
-            className="backdrop-blur-md bg-white/70 dark:bg-gray-800/60 shadow-2xl rounded-2xl w-80 flex flex-col h-96 border border-gray-300 dark:border-gray-700"
+            className="backdrop-blur-md bg-white/70 dark:bg-gray-800/80 shadow-2xl rounded-2xl w-80 sm:w-96 flex flex-col h-96 border border-gray-300 dark:border-gray-700"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b dark:border-gray-600 text-gray-800 dark:text-white font-semibold">
@@ -91,7 +91,7 @@ export default function Chatbot() {
             <div className="p-3 border-t dark:border-gray-700 flex gap-2">
               <input
                 type="text"
-                className="flex-1 rounded-lg px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none"
+                className="flex-1 rounded-lg px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none shadow-sm focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500"
                 placeholder="Type your message..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}

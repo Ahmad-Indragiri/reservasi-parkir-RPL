@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
+import BookingButton from "@/components/BookingButton";
+import toast from "react-hot-toast";
 
 export default function ReservasiPage() {
   const [lokasi, setLokasi] = useState("");
@@ -15,15 +17,14 @@ export default function ReservasiPage() {
   const [review, setReview] = useState("");
 
   const lokasiList = [
-    "Mall Harmoni",
-    "Stasiun Bekasi",
-    "Pasar Baru",
-    "Bandara Soekarno-Hatta",
-    "RS Hermina",
-    "Gedung Graha Mandiri"
+    "Artos",
+    "Kampus Unimma 1",
+    "Kampus Unimma 2",
+    "Rindam 4 Diponegoro",
+    "Matahari Alum-alun",
+    "Teko kono sak-sak ee jenengan",
   ];
 
-  // Ambil darkMode dan riwayat reservasi dari localStorage saat pertama kali load
   useEffect(() => {
     const savedMode = localStorage.getItem("darkMode");
     if (savedMode) setDarkMode(JSON.parse(savedMode));
@@ -32,7 +33,6 @@ export default function ReservasiPage() {
     if (savedHistory) setHistory(savedHistory);
   }, []);
 
-  // Simpan ke localStorage setiap kali darkMode atau history berubah
   useEffect(() => {
     localStorage.setItem("darkMode", JSON.stringify(darkMode));
     localStorage.setItem("reservasiHistory", JSON.stringify(history));
@@ -40,45 +40,77 @@ export default function ReservasiPage() {
 
   const handleReservasi = () => {
     if (!lokasi || !waktu) {
-      alert("Mohon isi semua data terlebih dahulu.");
+      toast.error("Mohon isi semua data terlebih dahulu.");
       return;
     }
 
-    // Simulasi loading atau proses backend
+    toast.loading("Memproses reservasi...", { id: "reservasi" });
+
     setTimeout(() => {
-      // Tambahkan reservasi ke riwayat
       const newReservasi = { lokasi, waktu };
-      const updatedHistory = [newReservasi, ...history].slice(0, 5); // Simpan 3-5 reservasi terakhir
+      const updatedHistory = [newReservasi, ...history].slice(0, 5);
       setHistory(updatedHistory);
-
-      // Simpan ke localStorage
       localStorage.setItem("reservasiHistory", JSON.stringify(updatedHistory));
-
-      alert(`✅ Reservasi berhasil!\n📍 Lokasi: ${lokasi}\n🕒 Waktu: ${waktu}`);
+      toast.success("Reservasi berhasil!", { id: "reservasi" });
     }, 800);
   };
 
-  const handleRatingChange = (newRating) => {
-    setRating(newRating);
+  const handleRatingChange = (newRating) => setRating(newRating);
+  const handleReviewChange = (e) => setReview(e.target.value);
+  const toggleDarkMode = () => setDarkMode(!darkMode);
+
+  const handleHapusRiwayat = () => {
+    toast(
+      (t) => (
+        <span>
+          Apakah kamu yakin ingin menghapus semua riwayat?
+          <div className="mt-2 flex justify-end gap-2">
+            <Button
+              onClick={() => {
+                toast.dismiss(t.id);
+              }}
+              variant="ghost"
+              size="sm"
+            >
+              Batal
+            </Button>
+            <Button
+              onClick={() => {
+                setHistory([]);
+                localStorage.removeItem("reservasiHistory");
+                toast.success("Riwayat berhasil dihapus");
+                toast.dismiss(t.id);
+              }}
+              variant="destructive"
+              size="sm"
+            >
+              Hapus
+            </Button>
+          </div>
+        </span>
+      ),
+      { duration: 8000 }
+    );
   };
 
-  const handleReviewChange = (e) => {
-    setReview(e.target.value);
-  };
+  const handleKirimReview = () => {
+    if (rating === 0 || review.trim() === "") {
+      toast.error("Harap isi rating dan review terlebih dahulu.");
+      return;
+    }
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
+    toast.success(`Review terkirim! (${rating} ⭐️)`, { duration: 3000 });
+    setRating(0);
+    setReview("");
   };
 
   return (
     <main
-      className={`min-h-screen px-4 sm:px-6 lg:px-12 py-10 transition-colors duration-500 ${
-        darkMode
+      className={`min-h-screen px-4 sm:px-6 lg:px-12 py-10 transition-colors duration-500 ${darkMode
           ? "bg-gray-900 text-gray-100"
           : "bg-gradient-to-br from-white to-blue-100 text-gray-900"
-      }`}
+        }`}
     >
-      {/* Tombol Toggle Dark Mode */}
       <div className="fixed bottom-4 right-4 z-50">
         <Button
           onClick={toggleDarkMode}
@@ -88,7 +120,6 @@ export default function ReservasiPage() {
         </Button>
       </div>
 
-      {/* Section Konten */}
       <motion.section
         className="max-w-xl mx-auto"
         initial={{ opacity: 0, y: -20 }}
@@ -103,21 +134,28 @@ export default function ReservasiPage() {
         </p>
 
         <div className="space-y-4">
-          {/* Input Lokasi */}
           <div>
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2 mb-1">
+            <label className="text-sm font-medium flex items-center gap-2 mb-1">
               <MapPin size={16} /> Lokasi Parkir
             </label>
-            <Input
-              placeholder="Contoh: Mall Harmoni"
+            <select
               value={lokasi}
               onChange={(e) => setLokasi(e.target.value)}
-            />
+              className="w-full border border-gray-300 dark:border-gray-600 p-2 rounded-md"
+            >
+              <option value="" disabled>
+                Pilih Lokasi
+              </option>
+              {lokasiList.map((item, index) => (
+                <option key={index} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
           </div>
 
-          {/* Input Waktu */}
           <div>
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2 mb-1">
+            <label className="text-sm font-medium flex items-center gap-2 mb-1">
               <Calendar size={16} /> Waktu Reservasi
             </label>
             <Input
@@ -127,23 +165,20 @@ export default function ReservasiPage() {
             />
           </div>
 
-          {/* Estimasi Waktu Tiba (Dummy) */}
           {lokasi && (
-            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow text-sm text-gray-800 dark:text-gray-200">
-              <p><strong>Estimasi waktu tiba:</strong> sekitar 15 menit dari lokasi Anda</p>
+            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow text-sm text-gray-900 dark:text-white">
+              <p>
+                <strong>Estimasi waktu tiba:</strong> sekitar 15 menit dari lokasi Anda
+              </p>
             </div>
           )}
 
-          {/* Tombol Reservasi */}
-          <Button
-            onClick={handleReservasi}
-            className="w-full mt-4 bg-blue-600 text-white hover:bg-blue-700 transition"
-          >
-            Reservasi Sekarang
-          </Button>
+
+          <div onClick={handleReservasi}>
+            <BookingButton />
+          </div>
         </div>
 
-        {/* Riwayat Reservasi */}
         {history.length > 0 && (
           <div className="mt-8">
             <h2 className="text-2xl font-semibold text-blue-700 dark:text-blue-400 mb-4">
@@ -151,12 +186,29 @@ export default function ReservasiPage() {
             </h2>
             <ul className="space-y-2">
               {history.map((item, index) => (
-                <li key={index} className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow text-sm text-gray-800 dark:text-gray-200">
-                  <p><strong>Lokasi:</strong> {item.lokasi}</p>
-                  <p><strong>Waktu:</strong> {item.waktu}</p>
+                <li
+                  key={index}
+                  className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow text-sm text-gray-900 dark:text-white"
+                >
+                  <p>
+                    <strong>Lokasi:</strong> {item.lokasi}
+                  </p>
+                  <p>
+                    <strong>Waktu:</strong> {item.waktu}
+                  </p>
                 </li>
               ))}
             </ul>
+
+
+            <div className="text-center mt-6">
+              <Button
+                onClick={handleHapusRiwayat}
+                className="bg-red-600 text-white hover:bg-red-700 transition"
+              >
+                Hapus Semua Riwayat
+              </Button>
+            </div>
           </div>
         )}
 
@@ -167,40 +219,41 @@ export default function ReservasiPage() {
               Penilaian Lokasi
             </h2>
             <div className="space-y-4">
-              {/* Rating */}
               <div>
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Rating</label>
+                <label className="text-sm font-medium mb-2">Rating</label>
                 <div className="flex gap-2">
                   {[1, 2, 3, 4, 5].map((star) => (
-                    <Button
+                    <motion.div
                       key={star}
-                      onClick={() => handleRatingChange(star)}
-                      className={`p-2 ${rating >= star ? "text-yellow-500" : "text-gray-400"}`}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", stiffness: 300 }}
                     >
-                      ★
-                    </Button>
+                      <Button
+                        onClick={() => handleRatingChange(star)}
+                        className={`p-2 ${rating >= star ? "text-yellow-500" : "text-gray-400"}`}
+                      >
+                        ★
+                      </Button>
+                    </motion.div>
                   ))}
                 </div>
               </div>
 
-              {/* Review */}
               <div>
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Review</label>
+                <label className="text-sm font-medium mb-2">Review</label>
                 <Input
                   value={review}
                   onChange={handleReviewChange}
                   placeholder="Tulis reviewmu tentang lokasi ini..."
-                  rows={4}
-                  className="resize-none"
                 />
               </div>
-            </div>
-            <div className="mt-4">
+
               <Button
-                onClick={() => alert(`Rating: ${rating} Bintang\nReview: ${review}`)}
+                onClick={handleKirimReview}
                 className="bg-blue-600 text-white hover:bg-blue-700 transition"
               >
-                Kirim Penilaian
+                Kirim Review
               </Button>
             </div>
           </div>

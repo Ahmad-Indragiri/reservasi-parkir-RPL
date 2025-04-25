@@ -1,4 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import MotionLayout from "@/components/MotionLayout";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,11 +20,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300`}
       >
-        {children}
+        <MotionLayout>{children}</MotionLayout>
+        <Toaster position="top-center" reverseOrder={false} />
       </body>
     </html>
   );
