@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MapPin, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 export default function PencarianPage() {
   const [lokasi, setLokasi] = useState("");
@@ -46,61 +47,61 @@ export default function PencarianPage() {
       setLoading(false);
     }, 1500);
   };
-  
 
   return (
     <main
-      className={`min-h-screen px-4 sm:px-6 lg:px-12 py-10 transition-colors duration-500 ${
+      className={`min-h-screen px-6 sm:px-8 lg:px-12 py-8 transition-colors duration-300 ${
         darkMode
           ? "bg-gray-900 text-gray-100"
-          : "bg-gradient-to-br from-white to-blue-100 text-gray-900"
+          : "bg-gradient-to-br from-blue-50 to-white text-gray-900"
       }`}
     >
-      {/* Toggle Dark Mode Button */}
+      {/* Dark Mode Toggle Button */}
       <div className="fixed bottom-4 right-4 z-50">
         <Button
           onClick={toggleDarkMode}
-          className="bg-gray-800 hover:bg-gray-700 text-white text-xl p-3 rounded-full shadow-md transition-all duration-300"
+          className="bg-gray-800 hover:bg-gray-700 text-white text-2xl p-3 rounded-full shadow-lg transition-transform duration-300 transform hover:scale-105"
         >
           {darkMode ? "🌞" : "🌙"}
         </Button>
       </div>
 
       <motion.section
-        className="max-w-2xl mx-auto"
+        className="max-w-3xl mx-auto"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <h1 className="text-3xl sm:text-4xl font-bold text-blue-700 dark:text-blue-400 mb-4 text-center">
-          Pencarian Lokasi Parkir
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-blue-700 dark:text-blue-400 mb-4 text-center">
+          Cari Tempat Parkir Terdekat
         </h1>
         <p className="text-center mb-6 text-gray-600 dark:text-gray-300">
-          Temukan tempat parkir terdekat dari lokasi kamu secara instan.
+          Temukan parkir terdekat hanya dalam beberapa detik.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-3 mb-6">
+        <div className="flex flex-col sm:flex-row gap-4 mb-6 items-center">
           <Input
             placeholder="Masukkan lokasi kamu..."
             value={lokasi}
             onChange={(e) => setLokasi(e.target.value)}
-            className="focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600 transition"
+            className="w-full sm:w-3/4 p-3 rounded-lg shadow-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 transition duration-300"
           />
           <Button
             onClick={cariParkir}
-            className={`flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300 ${
+            className={`w-full sm:w-auto flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg shadow-md transition-all duration-300 ${
               loading && "opacity-60 cursor-not-allowed"
             }`}
             disabled={loading}
           >
             {loading ? (
               <motion.div
-                className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"
+                className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"
                 aria-hidden="true"
               />
             ) : (
               <>
-                <Search size={18} /> Cari
+                <Search size={20} />
+                Cari
               </>
             )}
           </Button>
@@ -109,28 +110,36 @@ export default function PencarianPage() {
         <AnimatePresence>
           {hasil && !loading && (
             <motion.div
-              className="bg-gray-100 dark:bg-gray-800 p-5 rounded-xl shadow-md"
-              initial={{ opacity: 0, y: 10 }}
+              className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-xl"
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
+              exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
             >
-              <h3 className="text-xl font-semibold mb-2 text-green-700 dark:text-green-400">
+              <h3 className="text-xl font-semibold text-green-700 dark:text-green-400 mb-2">
                 🎉 Ditemukan: {hasil.nama}
               </h3>
-              <p>Jarak: {hasil.jarak}</p>
-              <p>Harga: {hasil.harga}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-300">Jarak: {hasil.jarak}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-300">Harga: {hasil.harga}</p>
               <Button
                 variant="outline"
                 className="mt-4 flex items-center gap-2 text-blue-600 border-blue-600 dark:text-blue-400 dark:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900"
                 onClick={() => window.open("https://www.google.com/maps", "_blank")}
               >
-                <MapPin size={18} /> Navigasi dengan Google Maps
+                <MapPin size={20} /> Navigasi ke Google Maps
               </Button>
             </motion.div>
           )}
         </AnimatePresence>
       </motion.section>
+
+      <div className="text-center mt-16">
+        <Link href="/download">
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl text-lg transition-transform hover:scale-105">
+            Kembali ke Beranda
+          </Button>
+        </Link>
+      </div>
     </main>
   );
 }

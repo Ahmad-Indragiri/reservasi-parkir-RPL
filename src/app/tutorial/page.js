@@ -115,7 +115,7 @@ export default function TutorialPage() {
 
       {/* Back Button */}
       <div className="text-center mt-16">
-        <Link href="/">
+        <Link href="/download">
           <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl text-lg transition-transform hover:scale-105">
             Kembali ke Beranda
           </Button>

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { MapPin } from "lucide-react";
+import Link from "next/link";
 
 const lokasiParkir = [
   "Artos",
@@ -41,18 +42,19 @@ export default function NavigasiPage() {
           : "bg-gradient-to-br from-white to-blue-100 text-gray-900"
       }`}
     >
-      {/* Toggle Dark Mode Button */}
-      <div className="fixed bottom-4 right-4 z-50">
+      {/* Dark Mode Toggle Button */}
+      <div className="fixed bottom-6 right-6 z-50">
         <Button
           onClick={toggleDarkMode}
-          className="bg-gray-800 hover:bg-gray-700 text-white text-xl p-3 rounded-full shadow-lg"
+          className="bg-gray-800 hover:bg-gray-700 text-white text-2xl p-4 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105"
         >
           {darkMode ? "🌞" : "🌙"}
         </Button>
       </div>
 
+      {/* Section Header */}
       <motion.section
-        className="max-w-3xl mx-auto text-center mb-10"
+        className="max-w-4xl mx-auto text-center mb-10"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -65,8 +67,9 @@ export default function NavigasiPage() {
         </p>
       </motion.section>
 
+      {/* Location Cards */}
       <motion.section
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto"
         initial="hidden"
         animate="show"
         variants={{
@@ -85,8 +88,8 @@ export default function NavigasiPage() {
             href={generateMapLink(lokasi)}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-4 bg-white dark:bg-gray-800 hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors duration-300 p-5 rounded-xl shadow-lg group"
-            whileHover={{ scale: 1.03 }}
+            className="group bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97 }}
             variants={{
               hidden: { opacity: 0, y: 20 },
@@ -94,19 +97,28 @@ export default function NavigasiPage() {
             }}
           >
             <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full text-blue-600 dark:text-blue-300">
-              <MapPin className="w-6 h-6" />
+              <MapPin className="w-8 h-8" />
             </div>
-            <div>
-              <h2 className="text-lg font-semibold text-white">
+            <div className="mt-4">
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
                 {lokasi}
               </h2>
-              <p className="text-sm text-white">
+              <p className="text-sm text-gray-500 dark:text-gray-300">
                 Klik untuk buka di Google Maps
               </p>
             </div>
           </motion.a>
         ))}
       </motion.section>
+
+      {/* Back to Homepage Button */}
+      <div className="text-center mt-16">
+        <Link href="/download">
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl text-lg transition-all duration-300 transform hover:scale-105">
+            Kembali ke Beranda
+          </Button>
+        </Link>
+      </div>
     </main>
   );
 }

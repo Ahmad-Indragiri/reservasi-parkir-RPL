@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation"; // For navigation
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function SimulasiPembayaranPage() {
   const [darkMode, setDarkMode] = useState(false);
@@ -26,13 +27,12 @@ export default function SimulasiPembayaranPage() {
 
   return (
     <main
-      className={`min-h-screen px-4 sm:px-6 lg:px-12 py-10 transition-colors duration-500 ${
-        darkMode
-          ? "bg-gray-900 text-gray-100"
-          : "bg-gradient-to-br from-white to-blue-100 text-gray-900"
-      }`}
+      className={`min-h-screen px-4 sm:px-6 lg:px-12 py-10 transition-colors duration-500 ${darkMode
+        ? "bg-gray-900 text-gray-100"
+        : "bg-gradient-to-br from-white to-blue-100 text-gray-900"
+        }`}
     >
-      {/* Toggle Dark Mode Button */}
+      {/* Dark Mode Toggle Button */}
       <div className="fixed bottom-4 right-4 z-50">
         <Button
           onClick={toggleDarkMode}
@@ -53,7 +53,7 @@ export default function SimulasiPembayaranPage() {
           Simulasi Pembayaran Digital
         </h1>
         <p className="text-lg text-gray-700 dark:text-gray-300">
-          Pilih Simulasi metode pembayaran dan ikuti panduan untuk melakukan transaksi.
+          Pilih metode pembayaran dan ikuti langkah-langkah untuk melakukan transaksi.
         </p>
       </motion.section>
 
@@ -71,8 +71,8 @@ export default function SimulasiPembayaranPage() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97 }}
           >
-            <div className="text-4xl mb-4">{wallet.icon}</div>
-            <h3 className="text-lg font-semibold mb-1 text-gray-800 dark:text-gray-100">
+            <div className="text-5xl mb-4">{wallet.icon}</div>
+            <h3 className="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-100">
               {wallet.nama}
             </h3>
             <p className="text-gray-500 dark:text-gray-300 text-sm">{wallet.deskripsi}</p>
@@ -136,6 +136,14 @@ export default function SimulasiPembayaranPage() {
           </Button>
         </motion.section>
       )}
+
+      <div className="text-center mt-16">
+        <Link href="/download">
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl text-lg transition-transform hover:scale-105">
+            Kembali
+          </Button>
+        </Link>
+      </div>
     </main>
   );
 }
@@ -170,94 +178,33 @@ const walletOptions = [
 
 const paymentInstructions = {
   DANA: [
-    {
-      title: "Langkah 1: Buka Aplikasi DANA",
-      description: "Buka aplikasi DANA di ponsel Anda.",
-    },
-    {
-      title: "Langkah 2: Pilih 'Bayar'",
-      description: "Pilih menu 'Bayar' di aplikasi DANA.",
-    },
-    {
-      title: "Langkah 3: Scan QR Code",
-      description: "Gunakan fitur 'Scan QR' untuk memindai kode QR yang tersedia.",
-    },
-    {
-      title: "Langkah 4: Konfirmasi Pembayaran",
-      description: "Masukkan PIN DANA dan konfirmasi pembayaran.",
-    },
+    { title: "Langkah 1: Buka Aplikasi DANA", description: "Buka aplikasi DANA di ponsel Anda." },
+    { title: "Langkah 2: Pilih 'Bayar'", description: "Pilih menu 'Bayar' di aplikasi DANA." },
+    { title: "Langkah 3: Scan QR Code", description: "Gunakan fitur 'Scan QR' untuk memindai kode QR yang tersedia." },
+    { title: "Langkah 4: Konfirmasi Pembayaran", description: "Masukkan PIN DANA dan konfirmasi pembayaran." },
   ],
   OVO: [
-    {
-      title: "Langkah 1: Buka Aplikasi OVO",
-      description: "Buka aplikasi OVO di ponsel Anda.",
-    },
-    {
-      title: "Langkah 2: Pilih 'Bayar'",
-      description: "Pilih menu 'Bayar' untuk mulai transaksi.",
-    },
-    {
-      title: "Langkah 3: Scan QR Code",
-      description: "Gunakan fitur scan QR untuk melakukan pembayaran.",
-    },
-    {
-      title: "Langkah 4: Selesai",
-      description: "Pembayaran berhasil dan Anda akan menerima notifikasi.",
-    },
+    { title: "Langkah 1: Buka Aplikasi OVO", description: "Buka aplikasi OVO di ponsel Anda." },
+    { title: "Langkah 2: Pilih 'Bayar'", description: "Pilih menu 'Bayar' untuk mulai transaksi." },
+    { title: "Langkah 3: Scan QR Code", description: "Gunakan fitur scan QR untuk melakukan pembayaran." },
+    { title: "Langkah 4: Selesai", description: "Pembayaran berhasil dan Anda akan menerima notifikasi." },
   ],
   GoPay: [
-    {
-      title: "Langkah 1: Buka Aplikasi OVO",
-      description: "Buka aplikasi OVO di ponsel Anda.",
-    },
-    {
-      title: "Langkah 2: Pilih 'Bayar'",
-      description: "Pilih menu 'Bayar' untuk mulai transaksi.",
-    },
-    {
-      title: "Langkah 3: Scan QR Code",
-      description: "Gunakan fitur scan QR untuk melakukan pembayaran.",
-    },
-    {
-      title: "Langkah 4: Selesai",
-      description: "Pembayaran berhasil dan Anda akan menerima notifikasi.",
-    },
+    { title: "Langkah 1: Buka Aplikasi GoPay", description: "Buka aplikasi GoPay di ponsel Anda." },
+    { title: "Langkah 2: Pilih 'Bayar'", description: "Pilih menu 'Bayar' untuk mulai transaksi." },
+    { title: "Langkah 3: Scan QR Code", description: "Gunakan fitur scan QR untuk melakukan pembayaran." },
+    { title: "Langkah 4: Selesai", description: "Pembayaran berhasil dan Anda akan menerima notifikasi." },
   ],
   "Bank Transfer": [
-    {
-      title: "Langkah 1: Buka Aplikasi OVO",
-      description: "Buka aplikasi OVO di ponsel Anda.",
-    },
-    {
-      title: "Langkah 2: Pilih 'Bayar'",
-      description: "Pilih menu 'Bayar' untuk mulai transaksi.",
-    },
-    {
-      title: "Langkah 3: Scan QR Code",
-      description: "Gunakan fitur scan QR untuk melakukan pembayaran.",
-    },
-    {
-      title: "Langkah 4: Selesai",
-      description: "Pembayaran berhasil dan Anda akan menerima notifikasi.",
-    },
+    { title: "Langkah 1: Buka Aplikasi Bank", description: "Buka aplikasi mobile banking di ponsel Anda." },
+    { title: "Langkah 2: Pilih 'Transfer'", description: "Pilih menu 'Transfer' dan pilih rekening tujuan." },
+    { title: "Langkah 3: Masukkan Nomor Rekening", description: "Masukkan nomor rekening tujuan dan jumlah transfer." },
+    { title: "Langkah 4: Selesai", description: "Transfer berhasil dan Anda akan menerima notifikasi." },
   ],
   ShopeePay: [
-    {
-      title: "Langkah 1: Buka Aplikasi OVO",
-      description: "Buka aplikasi OVO di ponsel Anda.",
-    },
-    {
-      title: "Langkah 2: Pilih 'Bayar'",
-      description: "Pilih menu 'Bayar' untuk mulai transaksi.",
-    },
-    {
-      title: "Langkah 3: Scan QR Code",
-      description: "Gunakan fitur scan QR untuk melakukan pembayaran.",
-    },
-    {
-      title: "Langkah 4: Selesai",
-      description: "Pembayaran berhasil dan Anda akan menerima notifikasi.",
-    },
+    { title: "Langkah 1: Buka Aplikasi Shopee", description: "Buka aplikasi Shopee di ponsel Anda." },
+    { title: "Langkah 2: Pilih 'ShopeePay'", description: "Pilih menu 'ShopeePay' untuk mulai transaksi." },
+    { title: "Langkah 3: Scan QR Code", description: "Gunakan fitur scan QR untuk melakukan pembayaran." },
+    { title: "Langkah 4: Selesai", description: "Pembayaran berhasil dan Anda akan menerima notifikasi." },
   ],
-  // Tambahkan instruksi lainnya sesuai metode pembayaran yang ada
 };

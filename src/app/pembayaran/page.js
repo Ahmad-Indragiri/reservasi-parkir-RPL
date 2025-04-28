@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation"; // Import useRouter for navigation
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function PembayaranPage() {
   const [darkMode, setDarkMode] = useState(false);
@@ -21,18 +22,16 @@ export default function PembayaranPage() {
   }, []);
 
   const goToSimulasi = () => {
-    router.push("/simulasi"); // Navigasi ke halaman simulasi
+    router.push("/simulasi"); // Navigate to simulation page
   };
 
   return (
     <main
       className={`min-h-screen px-4 sm:px-6 lg:px-12 py-10 transition-colors duration-500 ${
-        darkMode
-          ? "bg-gray-900 text-gray-100"
-          : "bg-gradient-to-br from-white to-blue-100 text-gray-900"
+        darkMode ? "bg-gray-900 text-gray-100" : "bg-gradient-to-br from-white to-blue-100 text-gray-900"
       }`}
     >
-      {/* Toggle Dark Mode Button */}
+      {/* Dark Mode Toggle Button */}
       <div className="fixed bottom-4 right-4 z-50">
         <Button
           onClick={toggleDarkMode}
@@ -57,7 +56,7 @@ export default function PembayaranPage() {
       </motion.section>
 
       <motion.section
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -65,14 +64,12 @@ export default function PembayaranPage() {
         {walletOptions.map((wallet, index) => (
           <motion.div
             key={index}
-            className="border rounded-xl p-6 flex flex-col items-center bg-white dark:bg-gray-800 hover:shadow-xl transition-all duration-300 hover:scale-105"
+            className="border-2 border-transparent rounded-xl p-6 flex flex-col items-center bg-white dark:bg-gray-800 hover:border-blue-600 hover:shadow-xl transition-all duration-300 hover:scale-105"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97 }}
           >
             <div className="text-4xl mb-4">{wallet.icon}</div>
-            <h3 className="text-lg font-semibold mb-1 text-gray-800 dark:text-gray-100">
-              {wallet.nama}
-            </h3>
+            <h3 className="text-lg font-semibold mb-1 text-gray-800 dark:text-gray-100">{wallet.nama}</h3>
             <p className="text-gray-500 dark:text-gray-300 text-sm">{wallet.deskripsi}</p>
             <button className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
               Bayar Sekarang
@@ -81,17 +78,13 @@ export default function PembayaranPage() {
         ))}
 
         <motion.div
-          className="border rounded-xl p-6 flex flex-col items-center bg-white dark:bg-gray-800 hover:shadow-xl transition-all duration-300 hover:scale-105"
+          className="border-2 border-transparent rounded-xl p-6 flex flex-col items-center bg-white dark:bg-gray-800 hover:border-green-600 hover:shadow-xl transition-all duration-300 hover:scale-105"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.97 }}
         >
           <div className="text-4xl mb-4">🔐</div>
-          <h3 className="text-lg font-semibold mb-1 text-gray-800 dark:text-gray-100">
-            Simulasi
-          </h3>
-          <p className="text-gray-500 dark:text-gray-300 text-sm">
-            Coba simulasi pembayaran tanpa transaksi asli.
-          </p>
+          <h3 className="text-lg font-semibold mb-1 text-gray-800 dark:text-gray-100">Simulasi</h3>
+          <p className="text-gray-500 dark:text-gray-300 text-sm">Coba simulasi pembayaran tanpa transaksi asli.</p>
           <button
             onClick={goToSimulasi}
             className="mt-4 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-all duration-300 transform hover:scale-105"
@@ -100,6 +93,14 @@ export default function PembayaranPage() {
           </button>
         </motion.div>
       </motion.section>
+
+      <div className="text-center mt-16">
+        <Link href="/download">
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl text-lg transition-transform hover:scale-105">
+            Kembali ke Beranda
+          </Button>
+        </Link>
+      </div>
     </main>
   );
 }

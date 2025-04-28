@@ -7,6 +7,7 @@ import { Calendar, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 import BookingButton from "@/components/BookingButton";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 export default function ReservasiPage() {
   const [lokasi, setLokasi] = useState("");
@@ -66,9 +67,7 @@ export default function ReservasiPage() {
           Apakah kamu yakin ingin menghapus semua riwayat?
           <div className="mt-2 flex justify-end gap-2">
             <Button
-              onClick={() => {
-                toast.dismiss(t.id);
-              }}
+              onClick={() => toast.dismiss(t.id)}
               variant="ghost"
               size="sm"
             >
@@ -141,7 +140,7 @@ export default function ReservasiPage() {
             <select
               value={lokasi}
               onChange={(e) => setLokasi(e.target.value)}
-              className="w-full border border-gray-300 dark:border-gray-600 p-2 rounded-md"
+              className="w-full border border-gray-300 dark:border-gray-600 p-2 rounded-md focus:ring-2 focus:ring-blue-500"
             >
               <option value="" disabled>
                 Pilih Lokasi
@@ -162,6 +161,7 @@ export default function ReservasiPage() {
               type="datetime-local"
               value={waktu}
               onChange={(e) => setWaktu(e.target.value)}
+              className="w-full border border-gray-300 dark:border-gray-600 p-2 rounded-md focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -172,7 +172,6 @@ export default function ReservasiPage() {
               </p>
             </div>
           )}
-
 
           <div onClick={handleReservasi}>
             <BookingButton />
@@ -199,7 +198,6 @@ export default function ReservasiPage() {
                 </li>
               ))}
             </ul>
-
 
             <div className="text-center mt-6">
               <Button
@@ -246,6 +244,7 @@ export default function ReservasiPage() {
                   value={review}
                   onChange={handleReviewChange}
                   placeholder="Tulis reviewmu tentang lokasi ini..."
+                  className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
@@ -259,6 +258,14 @@ export default function ReservasiPage() {
           </div>
         )}
       </motion.section>
+
+      <div className="text-center mt-16">
+        <Link href="/download">
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl text-lg transition-transform hover:scale-105">
+            Kembali ke Beranda
+          </Button>
+        </Link>
+      </div>
     </main>
   );
 }

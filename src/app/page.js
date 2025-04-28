@@ -1,65 +1,22 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import Chatbot from "@/components/Chatbot";
 import dynamic from "next/dynamic";
+import { motion } from "framer-motion";
 
 const SocialReview = dynamic(() => import("@/components/SocialReview"), { ssr: false });
 
-const fiturList = [
-  {
-    link: "/reservasi",
-    icon: "🅿️",
-    judul: "Reservasi Tempat Parkir",
-    deskripsi: "Booking slot parkir sebelum sampai tujuan.",
-  },
-  {
-    link: "/pencarian",
-    icon: "📍",
-    judul: "Pencarian Lokasi Parkir",
-    deskripsi: "Temukan tempat parkir terdekat secara instan.",
-  },
-  {
-    link: "/sensor",
-    icon: "📡",
-    judul: "Sensor Parkir",
-    deskripsi: "Pantau ketersediaan secara real-time.",
-  },
-  {
-    link: "/review",
-    icon: "⭐️⭐️⭐️",
-    judul: "Rating & Review",
-    deskripsi: "Penilaian dan ulasan dari pengguna.",
-  },
-  {
-    link: "/pembayaran",
-    icon: "💳",
-    judul: "Pembayaran Digital",
-    deskripsi: "Bayar dengan e-wallet atau metode digital lainnya.",
-  },
-  {
-    link: "/navigasi",
-    icon: "🗺️",
-    judul: "Navigasi Lokasi Anda",
-    deskripsi: "Arahkan ke lokasi parkir dengan Google Maps.",
-  },
-];
-
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
-  const [lokasi, setLokasi] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
 
-  const lokasiList = [
-    "Artos",
-    "Kampus Unimma 1",
-    "Kampus Unimma 2",
-    "Rindam 4 Diponegoro",
-    "Matahari Alum-alun",
-    "Teko kono sak-sak ee jenengan",
+  const fiturList = [
+    { link: "/reservasi", icon: "🅿️", judul: "Reservasi Parkir", deskripsi: "Dapatkan tempat parkir dengan mudah hanya dalam beberapa klik." },
+    { link: "/pencarian", icon: "📍", judul: "Temukan Lokasi Parkir", deskripsi: "Cari lokasi parkir terdekat dengan akurat dan cepat." },
+    { link: "/pembayaran", icon: "💳", judul: "Pembayaran Digital", deskripsi: "Bayar parkir dengan e-wallet atau kartu kredit." },
   ];
 
   useEffect(() => {
@@ -67,155 +24,67 @@ export default function Home() {
     if (savedMode !== null) setDarkMode(JSON.parse(savedMode));
   }, []);
 
-  const userProfile = {
-    name: "John Doe",
-    image: "/profile-image.jpg",
-  };
+  const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
   useEffect(() => {
     localStorage.setItem("darkMode", JSON.stringify(darkMode));
   }, [darkMode]);
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    localStorage.setItem("darkMode", !darkMode);
-  };
-
-  const handleLokasiChange = (e) => {
-    const input = e.target.value;
-    setLokasi(input);
-    setSuggestions(
-      input.length > 0
-        ? lokasiList.filter((item) =>
-            item.toLowerCase().includes(input.toLowerCase())
-          )
-        : []
-    );
-  };
-
-  const handleSuggestionClick = (lokasiDipilih) => {
-    setLokasi(lokasiDipilih);
-    setSuggestions([]);
-  };
-
-  useEffect(() => {
-    const handleOffline = () => alert("Kamu sedang offline");
-    window.addEventListener("offline", handleOffline);
-    return () => window.removeEventListener("offline", handleOffline);
-  }, []);
-
   return (
     <>
-      <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} userProfile={userProfile} />
+      <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
       <main
-        className={`transition-colors duration-300 min-h-screen ${
-          darkMode
-            ? "bg-gray-900 text-white"
-            : "bg-gradient-to-br from-white to-blue-100 text-gray-900"
-        } px-4 sm:px-6 lg:px-12 py-10`}
+        className={`transition-all duration-300 min-h-screen ${darkMode ? "bg-gray-900 text-white" : "bg-gradient-to-br from-white to-blue-100 text-gray-900"} px-4 sm:px-6 lg:px-12 py-10`}
       >
-        {/* Dark Mode Toggle */}
-        <div className="fixed bottom-4 left-4 z-50">
-          <Button
-            className="text-white bg-gray-800 hover:bg-gray-700 text-sm p-3 rounded-full shadow-md"
-            onClick={toggleDarkMode}
-          >
-            {darkMode ? "🌞" : "🌙"}
-          </Button>
-        </div>
-
         {/* Hero Section */}
-        <section className="text-center max-w-2xl mx-auto mb-16">
-          <div className="inline-block p-2 px-4 bg-blue-100 rounded-full text-blue-600 text-sm font-medium mb-4 shadow-sm">
-            Solusi Parkir Modern
-          </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight tracking-tight">
-            Reservasi Parkir{" "}
-            <span
-              className={`${
-                darkMode ? "text-gray-100" : "text-blue-600"
-              }`}
-            >
-              Mudah & Cepat
-            </span>
-          </h1>
-          <p
-            className={`text-lg md:text-xl mb-6 ${
-              darkMode ? "text-gray-200" : "text-gray-600"
-            }`}
+        <section className="text-center max-w-2xl mx-auto mb-16 px-4 sm:px-8 lg:px-16">
+          <motion.div
+            className="inline-block p-2 px-4 bg-blue-100 rounded-full text-blue-600 text-sm font-medium mb-4 shadow-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 1 }}
           >
-            Cari, reservasi, dan navigasi ke lokasi parkir hanya dari ponselmu.
-          </p>
-          <Button className="text-white bg-blue-600 hover:bg-blue-700 text-lg px-6 py-3 rounded-xl shadow-md hover:scale-105 transition-transform" asChild>
-            <Link href="/pencarian">Cari Tempat Parkir</Link>
+            Solusi Parkir Modern
+          </motion.div>
+          <motion.h1
+            className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight tracking-tight"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 1 }}
+          >
+            Nikmati Kemudahan Parkir{" "}
+            <span className={`${darkMode ? "text-gray-100" : "text-blue-600"}`}>Dengan Mudah & Cepat</span>
+          </motion.h1>
+          <motion.p
+            className={`text-lg md:text-xl mb-6 ${darkMode ? "text-gray-200" : "text-gray-600"}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7, duration: 1 }}
+          >
+            Parkir Ojo Sak-sak e Kang Ngebaki Dalan, Ngerti Ora? Marai Macet!!!.
+          </motion.p>
+          <Button
+            className="text-white bg-blue-600 hover:bg-blue-700 text-lg px-6 py-3 rounded-xl shadow-md hover:scale-105 transition-transform ease-in-out"
+            asChild
+          >
+            <Link href="/reservasi">Mulai Reservasi</Link>
           </Button>
         </section>
 
-        {/* Input Lokasi */}
-        <section className="text-center max-w-xl mx-auto mb-16 relative z-50">
-          <h2
-            className={`text-xl font-semibold mb-4 ${
-              darkMode ? "text-gray-200" : "text-gray-900"
-            }`}
-          >
-            🔍 Cari Lokasi Parkir
-          </h2>
-          <input
-            type="text"
-            value={lokasi}
-            onChange={handleLokasiChange}
-            placeholder="Ketik lokasi parkir..."
-            className={`w-full px-4 py-3 rounded-lg border shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-              darkMode ? "bg-gray-800 text-white border-gray-600" : ""
-            }`}
-          />
-          {suggestions.length > 0 && (
-            <ul className="absolute left-0 w-full border rounded mt-1 bg-white dark:bg-gray-800 shadow-md text-sm max-h-40 overflow-y-auto">
-              {suggestions.map((saran, idx) => (
-                <li
-                  key={idx}
-                  onClick={() => handleSuggestionClick(saran)}
-                  className={`px-4 py-2 cursor-pointer hover:bg-blue-100 dark:hover:bg-gray-700 ${
-                    darkMode ? "text-white" : "text-gray-900"
-                  }`}
-                >
-                  {saran}
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-
-        {/* Map */}
-        <section className="text-center my-16">
-          <h2
-            className={`text-3xl font-bold mb-10 ${
-              darkMode ? "text-gray-100" : "text-gray-900"
-            }`}
-          >
-            Peta Lokasi Parkir
-          </h2>
-          <div className="w-full h-64 sm:h-96 rounded-xl overflow-hidden shadow-md">
-            <iframe
-              title="Peta Magelang"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126406.57393787434!2d110.14304739616945!3d-7.476759219992282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a833a4bfbba8d%3A0x3027a76e352bc50!2sKota%20Magelang%2C%20Jawa%20Tengah!5e0!3m2!1sen!2sid!4v1713973960000!5m2!1sen!2sid"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
-          </div>
-        </section>
-
-        {/* Fitur */}
-        <section>
-          <h2 className="text-3xl font-bold mb-10 text-center">🚀 Fitur Unggulan</h2>
+        {/* Fitur Unggulan */}
+        <section className="text-center my-16 px-4 sm:px-8 lg:px-16">
+          <h2 className="text-3xl font-bold mb-10">🚀 Fitur Unggulan Kami</h2>
           <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {fiturList.map((fitur, idx) => (
               <Link href={fitur.link} key={idx}>
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl border dark:border-gray-600 shadow-sm hover:shadow-lg hover:-translate-y-1 transition cursor-pointer">
+                <motion.div
+                  className="bg-white dark:bg-gray-800 p-6 rounded-2xl border dark:border-gray-600 shadow-lg hover:shadow-xl hover:-translate-y-2 transition transform"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 * idx, duration: 1 }}
+                >
                   <div className="text-4xl mb-4">{fitur.icon}</div>
                   <h3 className="text-lg font-semibold mb-1 text-gray-900 dark:text-gray-200">
                     {fitur.judul}
@@ -223,31 +92,33 @@ export default function Home() {
                   <p className="text-gray-600 dark:text-gray-400 text-sm">
                     {fitur.deskripsi}
                   </p>
-                </div>
+                </motion.div>
               </Link>
             ))}
           </div>
         </section>
 
-        {/* Tutorial */}
-        <section className="mt-16 text-center">
-          <h2 className="text-3xl font-bold mb-6">💳 Panduan Penggunaan</h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-8">
-            Pelajari cara menggunakan aplikasi reservasi parkir dengan mudah dan cepat.
+        {/* Call-to-Action Section */}
+        <section className="text-center my-16 px-4 sm:px-8 lg:px-16">
+          <h2 className="text-3xl font-bold mb-6">Siap Untuk Kemudahan?</h2>
+          <p className="text-lg mb-8 text-gray-600 dark:text-gray-00">
+            Segera mulai reservasi parkir dan nikmati pengalaman parkir yang lebih mudah dan cepat.
           </p>
-          <div className="w-full max-w-sm mx-auto">
-            <Link href="/tutorial">
-              <Button className="text-white bg-blue-600 hover:bg-blue-700 text-lg px-6 py-3 rounded-xl shadow-md hover:scale-105 transition-transform">
-                Lihat Tutorial
-              </Button>
-            </Link>
-          </div>
+          <Button
+            className="text-white bg-green-600 hover:bg-green-700 text-lg px-6 py-3 rounded-xl shadow-md hover:scale-105 transition-transform ease-in-out"
+            asChild
+          >
+            <Link href="/reservasi">Coba Sekarang</Link>
+          </Button>
         </section>
 
-        <SocialReview />
-        <Chatbot />
+        {/* Testimonials / Social Proof */}
+        <section className="px-4 sm:px-8 lg:px-16">
+          <SocialReview />
+        </section>
+
+        <Footer darkMode={darkMode} />
       </main>
-      <Footer darkMode={darkMode} />
     </>
   );
 }
