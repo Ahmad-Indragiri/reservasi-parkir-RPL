@@ -15,9 +15,9 @@ export default function Footer({ darkMode }) {
         <p className="text-sm text-center md:text-left relative inline-block group">
           &copy; {new Date().getFullYear()}{" "}
           <span className="font-semibold text-blue-600 dark:text-blue-400 transition-colors duration-300 group-hover:text-blue-700 dark:group-hover:text-blue-300">
-            ParkirinAja
+            RentParking
           </span>
-          . All rights reserved.
+          .
           <br className="md:hidden" />
           <span className="block md:inline text-xs mt-1 text-gray-500 dark:text-gray-400">
             Designed & built by Ahmad Abdillah Indragiri.

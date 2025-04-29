@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
@@ -48,70 +48,77 @@ const fiturList = [
   },
 ];
 
+const lokasiList = [
+  "Artos",
+  "Kampus Unimma 1",
+  "Kampus Unimma 2",
+  "Rindam 4 Diponegoro",
+  "Matahari Alum-alun",
+  "Teko kono sak-sak ee jenengan",
+];
+
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
   const [lokasi, setLokasi] = useState("");
   const [suggestions, setSuggestions] = useState([]);
 
-  const lokasiList = [
-    "Artos",
-    "Kampus Unimma 1",
-    "Kampus Unimma 2",
-    "Rindam 4 Diponegoro",
-    "Matahari Alum-alun",
-    "Teko kono sak-sak ee jenengan",
-  ];
-
-  useEffect(() => {
-    const savedMode = localStorage.getItem("darkMode");
-    if (savedMode !== null) setDarkMode(JSON.parse(savedMode));
-  }, []);
-
   const userProfile = {
-    name: "John Doe",
-    image: "/profile-image.jpg",
+    name: "Indra",
+    image: "/lambang-unimma.png",
   };
 
+  // Load dark mode preference
+  useEffect(() => {
+    const savedMode = localStorage.getItem("darkMode");
+    if (savedMode !== null) {
+      setDarkMode(JSON.parse(savedMode));
+    }
+  }, []);
+
+  // Save dark mode preference
   useEffect(() => {
     localStorage.setItem("darkMode", JSON.stringify(darkMode));
   }, [darkMode]);
 
-  const toggleDarkMode = () => setDarkMode((prev) => !prev);
-
-  const handleLokasiChange = (e) => {
-    const input = e.target.value;
-    setLokasi(input);
-    setSuggestions(
-      input.length > 0
-        ? lokasiList.filter((item) =>
-            item.toLowerCase().includes(input.toLowerCase())
-          )
-        : []
-    );
-  };
-
-  const handleSuggestionClick = (lokasiDipilih) => {
-    setLokasi(lokasiDipilih);
-    setSuggestions([]);
-  };
-
+  // Offline warning
   useEffect(() => {
     const handleOffline = () => alert("Kamu sedang offline");
     window.addEventListener("offline", handleOffline);
     return () => window.removeEventListener("offline", handleOffline);
   }, []);
 
+  const toggleDarkMode = useCallback(() => {
+    setDarkMode((prev) => !prev);
+  }, []);
+
+  const handleLokasiChange = useCallback((e) => {
+    const input = e.target.value;
+    setLokasi(input);
+    setSuggestions(
+      input.length > 0
+        ? lokasiList.filter((item) =>
+          item.toLowerCase().includes(input.toLowerCase())
+        )
+        : []
+    );
+  }, []);
+
+  const handleSuggestionClick = useCallback((lokasiDipilih) => {
+    setLokasi(lokasiDipilih);
+    setSuggestions([]);
+  }, []);
+
   return (
     <>
       <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} userProfile={userProfile} />
       <main
-        className={`transition-colors duration-300 min-h-screen ${
-          darkMode
+        className={`transition-colors duration-300 min-h-screen pt-20 ${darkMode
             ? "bg-gray-900 text-white"
             : "bg-gradient-to-br from-white to-blue-100 text-gray-900"
-        } px-4 sm:px-6 lg:px-12 py-10`}
+          } px-4 sm:px-6 lg:px-12 pb-10`}
       >
-        {/* Dark Mode Toggle */}
+
+        {/* Toggle Dark Mode */}
         <div className="fixed bottom-4 left-4 z-50">
           <Button
             className="text-white bg-gray-800 hover:bg-gray-700 text-sm p-3 rounded-full shadow-md"
@@ -128,30 +135,18 @@ export default function Home() {
           </div>
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight tracking-tight">
             Reservasi Parkir{" "}
-            <span
-              className={`${
-                darkMode ? "text-gray-100" : "text-blue-600"
-              }`}
-            >
+            <span className={darkMode ? "text-gray-100" : "text-blue-600"}>
               Mudah & Cepat
             </span>
           </h1>
-          <p
-            className={`text-lg md:text-xl mb-6 ${
-              darkMode ? "text-gray-200" : "text-gray-600"
-            }`}
-          >
+          <p className={`text-lg md:text-xl mb-6 ${darkMode ? "text-gray-200" : "text-gray-600"}`}>
             Cari, reservasi, dan navigasi ke lokasi parkir hanya dari ponselmu.
           </p>
         </section>
 
         {/* Input Lokasi */}
         <section className="text-center max-w-xl mx-auto mb-16 relative z-50">
-          <h2
-            className={`text-xl font-semibold mb-4 ${
-              darkMode ? "text-gray-200" : "text-gray-900"
-            }`}
-          >
+          <h2 className={`text-xl font-semibold mb-4 ${darkMode ? "text-gray-200" : "text-gray-900"}`}>
             🔍 Cari Lokasi Parkir
           </h2>
           <input
@@ -159,9 +154,8 @@ export default function Home() {
             value={lokasi}
             onChange={handleLokasiChange}
             placeholder="Ketik lokasi parkir..."
-            className={`w-full px-4 py-3 rounded-lg border shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-              darkMode ? "bg-gray-800 text-white border-gray-600" : ""
-            }`}
+            className={`w-full px-4 py-3 rounded-lg border shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${darkMode ? "bg-gray-800 text-white border-gray-600" : ""
+              }`}
           />
           {suggestions.length > 0 && (
             <ul className="absolute left-0 w-full border rounded mt-1 bg-white dark:bg-gray-800 shadow-md text-sm max-h-40 overflow-y-auto">
@@ -169,9 +163,8 @@ export default function Home() {
                 <li
                   key={idx}
                   onClick={() => handleSuggestionClick(saran)}
-                  className={`px-4 py-2 cursor-pointer hover:bg-blue-100 dark:hover:bg-gray-700 ${
-                    darkMode ? "text-white" : "text-gray-900"
-                  }`}
+                  className={`px-4 py-2 cursor-pointer hover:bg-blue-100 dark:hover:bg-gray-700 ${darkMode ? "text-white" : "text-gray-900"
+                    }`}
                 >
                   {saran}
                 </li>
@@ -180,30 +173,26 @@ export default function Home() {
           )}
         </section>
 
-        {/* Map */}
+        {/* Peta Lokasi */}
         <section className="text-center my-16">
-          <h2
-            className={`text-3xl font-bold mb-10 ${
-              darkMode ? "text-gray-100" : "text-gray-900"
-            }`}
-          >
+          <h2 className={`text-3xl font-bold mb-10 ${darkMode ? "text-gray-100" : "text-gray-900"}`}>
             Peta Lokasi Parkir
           </h2>
           <div className="w-full h-64 sm:h-96 rounded-xl overflow-hidden shadow-md">
             <iframe
               title="Peta Magelang"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126406.57393787434!2d110.14304739616945!3d-7.476759219992282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a833a4bfbba8d%3A0x3027a76e352bc50!2sKota%20Magelang%2C%20Jawa%20Tengah!5e0!3m2!1sen!2sid!4v1713973960000!5m2!1sen!2sid"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19907.47019732115!2d110.22876463155714!3d-7.4733120561096465!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7055c5b0a80157%3A0x62f6a4a8702d77e1!2sMagelang%2C%20Central%20Java%2C%20Indonesia!5e0!3m2!1sen!2sid!4v1677391451809!5m2!1sen!2sid"
               width="100%"
               height="100%"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
+            />
           </div>
         </section>
 
-        {/* Fitur */}
+        {/* Fitur Unggulan */}
         <section>
           <h2 className="text-3xl font-bold mb-10 text-center">🚀 Fitur Unggulan</h2>
           <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
@@ -214,19 +203,17 @@ export default function Home() {
                   <h3 className="text-lg font-semibold mb-1 text-gray-900 dark:text-gray-200">
                     {fitur.judul}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm">
-                    {fitur.deskripsi}
-                  </p>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm">{fitur.deskripsi}</p>
                 </div>
               </Link>
             ))}
           </div>
         </section>
 
-        {/* Tutorial */}
+        {/* Panduan Penggunaan */}
         <section className="mt-16 text-center">
           <h2 className="text-3xl font-bold mb-6">💳 Panduan Penggunaan</h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-8">
+          <p className="text-gray-300 dark:text-gray-600 mb-8">
             Pelajari cara menggunakan aplikasi reservasi parkir dengan mudah dan cepat.
           </p>
           <div className="w-full max-w-sm mx-auto">
@@ -238,6 +225,7 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Komponen Tambahan */}
         <SocialReview />
         <Chatbot />
       </main>
