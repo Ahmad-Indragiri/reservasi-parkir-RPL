@@ -20,7 +20,7 @@ export default function Footer({ darkMode }) {
           .
           <br className="md:hidden" />
           <span className="block md:inline text-xs mt-1 text-gray-500 dark:text-gray-400">
-            Designed & built by Ahmad Abdillah Indragiri.
+            Built by Ahmad Abdillah Indragiri.
           </span>
         </p>
 
