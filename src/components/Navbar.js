@@ -33,7 +33,7 @@ export default function Navbar({ darkMode, toggleDarkMode, userProfile }) {
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2">
           <Image
-            src="/rent_park.png"
+            src="/luxpark.jpg"
             alt="ParkirinAja"
             width={120}
             height={30}
@@ -129,7 +129,7 @@ export default function Navbar({ darkMode, toggleDarkMode, userProfile }) {
                 className="rounded-full border border-gray-300 group-hover:border-blue-500 transition"
               />
               <span className="text-sm font-medium hidden lg:inline-block">
-                {userProfile?.name || "Indra"}
+                {userProfile?.name || "Prototype"}
               </span>
             </button>
 

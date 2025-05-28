@@ -97,12 +97,6 @@ export default function Home() {
             Parkir Ojo Sak-sak e Kang Ngebaki Dalan, Ngerti Ora? Marai Macet!!!
           </motion.p>
 
-          <Button
-            className="text-white bg-blue-600 hover:bg-blue-700 text-lg px-6 py-3 rounded-xl shadow-md hover:scale-105 transition-transform"
-            asChild
-          >
-            <Link href="/reservasi">Mulai Reservasi</Link>
-          </Button>
         </motion.section>
 
         {/* Fitur Unggulan */}
@@ -154,7 +148,7 @@ export default function Home() {
             className="text-white bg-green-600 hover:bg-green-700 text-lg px-6 py-3 rounded-xl shadow-md hover:scale-105 transition-transform"
             asChild
           >
-            <Link href="/reservasi">Coba Sekarang</Link>
+            <Link href="/download">Coba Sekarang</Link>
           </Button>
         </motion.section>
 
